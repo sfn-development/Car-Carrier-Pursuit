@@ -1,0 +1,1 @@
+csc -target:library CarCarrierPursuit.cs -reference:CalloutAPI.net.dll -reference:CitizenFX.Core.dll -out:CarCarrierPursuit.net.dll
