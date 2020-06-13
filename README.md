@@ -17,3 +17,5 @@ A callout that involves officers being involved in a pursuit.
 1. Open the command prompt in VS by going to Tools->Command Line->Developer Command Line
 
 2. Run the compile.bat file to produce the .net.dll file for the callout. 
+
+NOTE: Please ensure that the references are in the same directory as the .bat file.
