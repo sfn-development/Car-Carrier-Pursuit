@@ -339,6 +339,5 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
-/Properties
-*.csproj
-*.sln
+*.dll
+*.lnk
