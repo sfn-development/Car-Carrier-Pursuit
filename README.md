@@ -1,6 +1,6 @@
 # Car-Carrier-Pursuit
 
-A callout that involves officers being involved in a pursuit.
+A callout that involves officers being involved in a pursuit with a car carrier.
 
 ## How to view code
 
