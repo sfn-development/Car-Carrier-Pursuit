@@ -31,11 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CalloutAPI.net">
-      <HintPath>..\..\first-callout-sfn\first-callout-sfn\CalloutAPI.net.dll</HintPath>
-    </Reference>
     <Reference Include="CitizenFX.Core">
-      <HintPath>C:\Users\Mrfn3\AppData\Local\FiveM\FiveM.app\citizen\clr2\lib\mono\4.5\CitizenFX.Core.dll</HintPath>
+      <HintPath>..\..\..\Games\FiveM\FiveM.app\citizen\clr2\lib\mono\4.5\CitizenFX.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FivePD.net">
+      <HintPath>.\FivePD.net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CarCarrierPursuit.cs" />
+    <Compile Include="Locations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -2,66 +2,60 @@
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using CitizenFX.Core;
-using CalloutAPI;
+using FivePD.API;
+using System.Collections.Generic;
 
 namespace Car_Carrier_Pursuit
 {
 
     [GuidAttribute("9d3946b1-370d-475e-9b70-99263f12ebd9")]
-    [CalloutProperties("Car Carrier Pursuit", "SFN-Development", "1.0.0", Callout.Probability.Medium)]
-    public class CarCarrierPursuit : CalloutAPI.Callout
+    [CalloutProperties("Car Carrier Pursuit", "SFN-Development", "1.0.1")]
+    public class CarCarrierPursuit : FivePD.API.Callout
     {
+
+        //Initalize Global Location and Heading Dictionaries
+        readonly Locations locations;
 
         /*Truck Variables*/
         Model phantom = new Model(VehicleHash.Phantom);
-        Vector3 truckCord = new Vector3(-41.87F, -1076.49F, 26.74F);
-        int truckHeading = 70;
         Vehicle truck;
 
         /*Trailer Variables*/
         Model carCarrier = new Model(VehicleHash.TR4);
-        Vector3 carCarrierCords = new Vector3(-32.49F, -1080.07F, 26.66F);
         Vehicle trailer;
 
         /*Ped Variables*/
         Ped suspect;
-        Vector3 suspectCords = new Vector3(-44F, -1077.65F, 26.67F);
-        int suspectHeading = 347;
 
         public CarCarrierPursuit() 
         {
-            if (System.Math.Abs(Game.PlayerPed.GetPositionOffset(truckCord).X) < 2000)
-            {
-                InitBase(truckCord);
-                this.ShortName = "Car Carrier Pursuit";
-                this.CalloutDescription = "There are reports of someone trying to steal a car-carrier from the Premium Deluxe Motorsport's car dealership. Stop the suspects and return the truck and cars to the dealership.";
-                this.ResponseCode = 3;
-                this.StartDistance = 120f;
-            }
-            else {
-                Debug.WriteLine("~r~[Car Carrier Pursuit Callout]: ~w~Player is too far away to start the callout");            
-            }
+            locations = new Locations("ls", 1);
+            InitInfo(locations.truckCords);
+            this.ShortName = "Car Carrier Pursuit";
+            this.CalloutDescription = "There are reports of someone trying to steal a car-carrier from the Premium Deluxe Motorsport's car dealership. Stop the suspects and return the truck and cars to the dealership.";
+            this.ResponseCode = 3;
+            this.StartDistance = 90f;
+            
         }
 
-        public async override Task Init()
+        public async override Task OnAccept()
         {
-            this.OnAccept(15, BlipColor.Red);
-            truck = await World.CreateVehicle(phantom, truckCord, truckHeading);
-            trailer = await World.CreateVehicle(carCarrier, carCarrierCords, truckHeading);
+            this.InitBlip(15, BlipColor.Red);
+            truck = await World.CreateVehicle(phantom, locations.truckCords, locations.truckHeading);
+            trailer = await World.CreateVehicle(carCarrier, locations.trailerCords, locations.trailerHeading);
 
             CitizenFX.Core.Native.API.AttachVehicleToTrailer(truck.GetHashCode(), trailer.GetHashCode(), 1F);
-            suspect = await SpawnPed(GetRandomPed(), suspectCords, suspectHeading);
+            suspect = await SpawnPed(GetRandomPed(), locations.pedCords, locations.pedHeading);
             suspect.AlwaysKeepTask = true;
-            Notify("~g~[Dispatch]: ~w~There are reports of a subject breaking into a car carrier.");
-            Notify("~g~[Dispatch]: ~w~Get to the scene and apprehend the suspect.");
-            Notify("~r~[Callout]: ~w~Call for backup once you have arrived to the dealership.");
+            Notify("There are reports of a subject breaking into a car carrier.");
+            Notify("Get to the scene and investigate the area.");
 
         }
         public async override void OnStart(Ped closest)
         {
 
             /*Dispatch Notification*/
-            Notify("~g~[Dispatch]: ~w~The truck has a tracker on it. See your map for location details");
+            Notify("The truck has a tracker on it. See your map for location details.");
 
             /*Cords for person to drive to.*/
             Random rand = new Random();
@@ -98,11 +92,11 @@ namespace Car_Carrier_Pursuit
             }
         }
 
-        public void Notify(String message)
+        public void Notify(string message)
         {
-            CitizenFX.Core.Native.API.BeginTextCommandThefeedPost("STRING");
-            CitizenFX.Core.Native.API.AddTextComponentSubstringPlayerName(message);
-            CitizenFX.Core.Native.API.EndTextCommandThefeedPostTicker(false, true);
+
+            ShowNetworkedNotification(message, "CHAR_CALL911", "CHAR_CALL911", "Dispatch", "Car Carrier Pursuit", 15f);
+
         }
     }
 }
