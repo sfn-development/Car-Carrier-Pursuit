@@ -10,49 +10,65 @@ namespace Car_Carrier_Pursuit
 
     [GuidAttribute("9d3946b1-370d-475e-9b70-99263f12ebd9")]
     [CalloutProperties("Car Carrier Pursuit", "SFN-Development", "1.0.2")]
-    public class CarCarrierPursuit : FivePD.API.Callout
+    public class CarCarrierPursuit : Callout
     {
+       
+        /*Department Locations*/
+        Vector3 MISSON_ROW = new Vector3(428F, -980F, 30F);
+        Vector3 SANDY_SHORES = new Vector3(1852F, 3688F, 34F);
 
-        Boolean pursuit = true;
-        Boolean destinationSpawn = false;
+        /*Check Variables Needed for pursuit*/
+        bool pursuit = true;
+        bool destinationSpawn = false;
 
         //Initalize global location and heading object
         readonly Locations locations;
 
         /*Truck Variables*/
-        Model phantom = new Model(VehicleHash.Phantom);
+        readonly Model phantom = new Model(VehicleHash.Phantom);
         Vehicle truck;
 
         /*Trailer Variables*/
-        Model carCarrier = new Model(VehicleHash.TR4);
+        readonly Model carCarrier = new Model(VehicleHash.TR4);
         Vehicle trailer;
 
         /*Ped Variables - Person driving the truck*/
         Ped driver;
 
         /*Other Suspect - Gang that is waiting for the car trailer at the destination*/
-        
+
         //Cars
-        Model dubsta2 = new Model(VehicleHash.Dubsta2);
+        readonly Model dubsta2 = new Model(VehicleHash.Dubsta2);
         Vehicle car1;
         Vehicle car2;
 
         //Peds
-        Ped ped1 = null;
+        Ped ped1;
         Ped ped2;
         Ped ped3;
         Ped ped4;
 
+        
 
         public CarCarrierPursuit() 
         {
-            locations = new Locations("ls", 1, 1);
-            InitInfo(locations.TruckCords);
+
+            if (World.GetDistance(Game.PlayerPed.Position, MISSON_ROW) < World.GetDistance(Game.PlayerPed.Position, SANDY_SHORES))
+            {
+                locations = new Locations("ls", 1, 1);
+            }
+            else 
+            {
+                locations = new Locations("sandy", 1, 1);
+            }
+
+            this.InitInfo(locations.TruckCords);
             this.ShortName = "Car Carrier Pursuit";
-            this.CalloutDescription = "There are reports of someone trying to steal a car-carrier from the Premium Deluxe Motorsport's car dealership. Stop the suspects and return the truck and cars to the dealership.";
             this.ResponseCode = 3;
             this.StartDistance = 90f;
+            this.CalloutDescription = locations.CalloutDescription;
             
+
         }
 
         //When user accepts callout
@@ -62,8 +78,9 @@ namespace Car_Carrier_Pursuit
             truck = await World.CreateVehicle(phantom, locations.TruckCords, locations.TruckHeading);
             trailer = await World.CreateVehicle(carCarrier, locations.TrailerCords, locations.TrailerHeading);
 
-            CitizenFX.Core.Native.API.AttachVehicleToTrailer(truck.GetHashCode(), trailer.GetHashCode(), 1F);
+            API.AttachVehicleToTrailer(truck.GetHashCode(), trailer.GetHashCode(), 1F);
             driver = await SpawnPed(PedHash.Michael, locations.DriverCords, locations.DriverHeading);
+            driver.RelationshipGroup = "PRIVATE_SECURITY";
             Notify("There are reports of a subject breaking into a car carrier.");
             Notify("Get to the scene and investigate the area.");
 
@@ -74,6 +91,7 @@ namespace Car_Carrier_Pursuit
         {
 
             /*Dispatch Notification*/
+            Notify("Looks like the suspect is taking off.");
             Notify("The truck has a tracker on it. See your map for location details.");
 
             base.OnStart(closest);
@@ -148,13 +166,13 @@ namespace Car_Carrier_Pursuit
             }
 
             driver.Task.LeaveVehicle(LeaveVehicleFlags.LeaveDoorOpen);
-            driver.Task.ShootAt(closest);
+            driver.Task.FightAgainst(closest);
 
             if (ped1 != null) {
-                ped1.Task.ShootAt(closest);
-                ped2.Task.ShootAt(closest);
-                ped3.Task.ShootAt(closest);
-                ped4.Task.ShootAt(closest);
+                ped1.Task.FightAgainst(closest);
+                ped2.Task.FightAgainst(closest);
+                ped3.Task.FightAgainst(closest);
+                ped4.Task.FightAgainst(closest);
             }
             
 

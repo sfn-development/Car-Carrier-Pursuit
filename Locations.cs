@@ -4,6 +4,9 @@ namespace Car_Carrier_Pursuit
 {
     class Locations
     {
+        /*Callout Descriptions*/
+        private string description;
+
         /*Spawn Locations*/
         private Vector3 truck_cord;
         private Vector3 trailer_cord;
@@ -33,8 +36,10 @@ namespace Car_Carrier_Pursuit
             /*Spawn Cords and Headings*/
 
             //Premium Deluxe Power Street
-            if (city == "ls" && choice == 1) 
+            if (city == "ls" && choice == 1)
             {
+                this.description = "There are reports of someone trying to steal a car-carrier from the Premium Deluxe Motorsport's car dealership. Stop the suspect and return the truck and cars to the dealership.";
+
                 this.truck_cord = new Vector3(-41.87F, -1076.49F, 26.74F);
                 this.trailer_cord = new Vector3(-32.49F, -1080.07F, 26.66F);
                 this.driver_cord = new Vector3(-44F, -1077.65F, 26.67F);
@@ -42,14 +47,26 @@ namespace Car_Carrier_Pursuit
                 this.TruckHeading = 70;
                 this.TrailerHeading = TruckHeading;
                 this.DriverHeading = 347;
+            }
+            //Larry's RV Sales Route 68
+            else if (city == "sandy" && choice == 1) 
+            {
+                this.description = "There are reports of someone trying to steal a car-carrier from the Larry's RV Sales. Stop the suspect and return the truck and cars to the dealership.";
 
+                this.truck_cord = new Vector3(1250.33F, 2701.45F, 38.06F);
+                this.trailer_cord = new Vector3(1249.37F, 2711.1F, 38.06F);
+                this.driver_cord = new Vector3(1252.95F, 2699.59F, 38.01F);
+
+                this.TruckHeading = 185;
+                this.TrailerHeading = TruckHeading;
+                this.DriverHeading = 96;
             }
 
             /*Destination Cords and headings*/
 
             //Paleto BayView Lodge
-            if (dest == 1) {
-
+            if (dest == 1) 
+            {
                 this.destination_cord = new Vector3(-672.09F, 5788.22F, 17.34F);
 
                 //Car 1
@@ -71,11 +88,13 @@ namespace Car_Carrier_Pursuit
                 this.Ped3Heading = 40;
                 this.ped4_cords = new Vector3(-689.35F, 5762.43F, 17.33F);
                 this.Ped4Heading = 45;
-
             }
             //TO-DO add destinations with elseif. 
 
         }
+
+        /*Description Getter*/
+        public string CalloutDescription { get => this.description; }
 
         /*Spawn Locations Getters*/
         public Vector3 TruckCords { get => truck_cord;}
