@@ -113,7 +113,6 @@ namespace Car_Carrier_Pursuit
                 //Checks if the suspect is within a certain distance of the destination every 4 seconds 
                 await BaseScript.Delay(4000);
                 float distance = truck.Position.DistanceToSquared(locations.DestinationCords);
-                Debug.WriteLine(truck.Speed.ToString());
                 if (distance < 2000F) {
 
                     pursuit = false;
