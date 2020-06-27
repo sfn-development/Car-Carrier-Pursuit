@@ -342,3 +342,4 @@ healthchecksdb
 *.dll
 *.lnk
 /Car-Carrier-Pursuit
+/config.json
