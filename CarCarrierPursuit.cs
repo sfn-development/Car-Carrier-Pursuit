@@ -9,7 +9,7 @@ namespace Car_Carrier_Pursuit
 {
 
     [GuidAttribute("9d3946b1-370d-475e-9b70-99263f12ebd9")]
-    [CalloutProperties("Car Carrier Pursuit", "SFN-Development", "1.0.2")]
+    [CalloutProperties("Car Carrier Pursuit", "SFN-Development", "1.0.3")]
     public class CarCarrierPursuit : Callout
     {
        
@@ -48,24 +48,24 @@ namespace Car_Carrier_Pursuit
         Ped ped3;
         Ped ped4;
 
-        
+        //Random
+        Random random = new Random();
 
         public CarCarrierPursuit() 
         {
-
             if (World.GetDistance(Game.PlayerPed.Position, MISSON_ROW) < World.GetDistance(Game.PlayerPed.Position, SANDY_SHORES))
             {
-                locations = new Locations("ls", 1, 1);
+                locations = new Locations("ls", 1, random.Next(1, 4));
             }
             else 
             {
-                locations = new Locations("sandy", 1, 1);
+                locations = new Locations("sandy", 1, random.Next(1, 3));
             }
 
             this.InitInfo(locations.TruckCords);
             this.ShortName = "Car Carrier Pursuit";
             this.ResponseCode = 3;
-            this.StartDistance = 90f;
+            this.StartDistance = 120f;
             this.CalloutDescription = locations.CalloutDescription;
             
 
@@ -103,6 +103,7 @@ namespace Car_Carrier_Pursuit
             driver.Task.EnterVehicle(truck, VehicleSeat.Driver);
             truck.TowVehicle(trailer, false);
             //https://www.vespura.com/fivem/drivingstyle/ is a god send
+            //Possilble 786980
             driver.Task.DriveTo(truck, locations.DestinationCords, 0F, 100F, 524844);
 
             Marker.Delete();
@@ -110,22 +111,13 @@ namespace Car_Carrier_Pursuit
 
             while (pursuit) {
 
-                //Checks if the suspect is within a certain distance of the destination every 4 seconds 
-                await BaseScript.Delay(4000);
+                //Checks if the suspect is within a certain distance of the destination every second 
+                await BaseScript.Delay(1000);
                 float distance = truck.Position.DistanceToSquared(locations.DestinationCords);
-                if (distance < 2000F) {
+                if (distance < 2500F) {
 
                     pursuit = false;
                     break;
-                }
-
-                //Check if the truck has stopped
-                if (truck.Speed == 0F) {
-                    await BaseScript.Delay(7000);
-                    if (truck.Speed == 0F) {
-                        pursuit = false;
-                        break; 
-                    }
                 }
 
                 //Spawns destination entities when the pursuit is close to it.
@@ -173,21 +165,29 @@ namespace Car_Carrier_Pursuit
                 ped3.Task.FightAgainst(closest);
                 ped4.Task.FightAgainst(closest);
             }
-            
-
-
         }
 
         public override void OnCancelBefore()
         {
-            //Deletes all destination peds but will keep the car carrier
+            //Deletes all destination peds but will keep the car carrier and driver
             base.OnCancelBefore();
-            ped1 = null;
-            ped2 = null;
-            ped3 = null;
-            ped4 = null;
-            car1 = null;
-            car2 = null;
+            if (ped1 != null)
+            {
+                ped1.Delete();
+                ped2.Delete();
+                ped3.Delete();
+                ped4.Delete();
+                car1.Delete();
+                car2.Delete();
+                Notify("All shooters and cars have been deleted. It is up to you to tow the car carrier.");
+            }
+            else {
+                driver.Delete();
+                truck.Delete();
+                trailer.Delete();
+                Notify("Truck and trailer has been removed to reduce object spam.");
+            }
+            
         }
 
         public void Notify(string message)

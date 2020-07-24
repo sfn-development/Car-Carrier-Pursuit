@@ -29,14 +29,14 @@ namespace Car_Carrier_Pursuit
         /// Location object depending on where the callout should take place
         /// </summary>
         /// <param name="city">Choose from ls and sandy</param>
-        /// <param name="choice">Choose location in the city</param>
+        /// <param name="start">Choose location in the city</param>
         /// <param name="dest">Choose destination location</param>
-        public Locations(string city, int choice, int dest) {
+        public Locations(string city, int start, int dest) {
 
             /*Spawn Cords and Headings*/
 
             //Premium Deluxe Power Street
-            if (city == "ls" && choice == 1)
+            if (city == "ls" && start == 1)
             {
                 this.description = "There are reports of someone trying to steal a car-carrier from the Premium Deluxe Motorsport's car dealership. Stop the suspect and return the truck and cars to the dealership.";
 
@@ -49,7 +49,7 @@ namespace Car_Carrier_Pursuit
                 this.DriverHeading = 347;
             }
             //Larry's RV Sales Route 68
-            else if (city == "sandy" && choice == 1) 
+            else if (city == "sandy" && start == 1) 
             {
                 this.description = "There are reports of someone trying to steal a car-carrier from the Larry's RV Sales. Stop the suspect and return the truck and cars to the dealership.";
 
@@ -63,31 +63,102 @@ namespace Car_Carrier_Pursuit
             }
 
             /*Destination Cords and headings*/
-
-            //Paleto BayView Lodge
-            if (dest == 1) 
+            switch (dest) 
             {
-                this.destination_cord = new Vector3(-672.09F, 5788.22F, 17.34F);
+                //Paleto BayView Lodge
+                case 1:
+                    this.destination_cord = new Vector3(-672.09F, 5788.22F, 17.34F);
 
-                //Car 1
-                this.enemyCar1_cords = new Vector3(-716.28F, 5768.2F, 17.07F);
-                this.Car1Heading = 17;
+                    //Car 1
+                    this.enemyCar1_cords = new Vector3(-716.28F, 5768.2F, 17.07F);
+                    this.Car1Heading = 17;
 
-                //Peds for car 1
-                this.ped1_cords = new Vector3(-710.16F, 5786.01F, 17.36F);
-                this.Ped1Heading = 128;
-                this.ped2_cords = new Vector3(-691.67F, 5780.69F, 17.33F);
-                this.Ped2Heading = 92;
+                    //Peds for car 1
+                    this.ped1_cords = new Vector3(-710.16F, 5786.01F, 17.36F);
+                    this.Ped1Heading = 128;
+                    this.ped2_cords = new Vector3(-691.67F, 5780.69F, 17.33F);
+                    this.Ped2Heading = 92;
 
-                //Car 2
-                this.enemyCar2_cords = new Vector3(-708.72F, 5784.58F, 16.89F);
-                this.Car2Heading = 120;
+                    //Car 2
+                    this.enemyCar2_cords = new Vector3(-708.72F, 5784.58F, 16.89F);
+                    this.Car2Heading = 120;
 
-                //Peds for car 2
-                this.ped3_cords = new Vector3(-718.23F, 5766.41F, 17.61F);
-                this.Ped3Heading = 40;
-                this.ped4_cords = new Vector3(-689.35F, 5762.43F, 17.33F);
-                this.Ped4Heading = 45;
+                    //Peds for car 2
+                    this.ped3_cords = new Vector3(-718.23F, 5766.41F, 17.61F);
+                    this.Ped3Heading = 40;
+                    this.ped4_cords = new Vector3(-689.35F, 5762.43F, 17.33F);
+                    this.Ped4Heading = 45;
+                    break;
+                case 2:
+                    this.destination_cord = new Vector3(1358.6F, -735.46F, 67.23F);
+
+                    //Car 1
+                    this.enemyCar1_cords = new Vector3(1331.62F, -733.38F, 65.81F);
+                    this.Car1Heading = 44;
+
+                    //Peds for car 1
+                    this.ped1_cords = new Vector3(1329.4F, -731.8F, 66.11F);
+                    this.Ped1Heading = 71;
+                    this.ped2_cords = new Vector3(1343.44F, -757.97F, 67.67F);
+                    this.Ped2Heading = 32;
+
+                    //Car 2
+                    this.enemyCar2_cords = new Vector3(1334.74F, -725.32F, 65.86F);
+                    this.Car2Heading = 97;
+
+                    //Peds for car 2
+                    this.ped3_cords = new Vector3(1332.12F, -725.53F, 66.18F);
+                    this.Ped3Heading = 61;
+                    this.ped4_cords = new Vector3(1353.82F, -710.93F, 67.24F);
+                    this.Ped4Heading = 113;
+                    break;
+                case 3:
+                    this.destination_cord = new Vector3(134.7F, -3333.54F, 6.02F);
+
+                    //Car 1
+                    this.enemyCar1_cords = new Vector3(152.07F, -3338.08F, 5.59F);
+                    this.Car1Heading = 305;
+
+                    //Peds for car 1
+                    this.ped1_cords = new Vector3(154.33F, -3336.82F, 6.02F);
+                    this.Ped1Heading = 308;
+                    this.ped2_cords = new Vector3(155.23F, -3323.08F, 15.99F);
+                    this.Ped2Heading = 265;
+
+                    //Car 2
+                    this.enemyCar2_cords = new Vector3(151.87F, -3326.77F, 5.59F);
+                    this.Car2Heading = 270;
+
+                    //Peds for car 2
+                    this.ped3_cords = new Vector3(154.52F, -3326.8F, 6.02F);
+                    this.Ped3Heading = 244;
+                    this.ped4_cords = new Vector3(115.9F, -3323.9F, 6.01F);
+                    this.Ped4Heading = 22;
+                    break;
+                case 4:
+                    this.destination_cord = new Vector3(81.5F, 3670.22F, 39.4F);
+
+                    //Car 1
+                    this.enemyCar1_cords = new Vector3(70.59F, 3621.27F, 39.24F);
+                    this.Car1Heading = 211;
+
+                    //Peds for car 1
+                    this.ped1_cords = new Vector3(71.97F, 3618.95F, 39.74F);
+                    this.Ped1Heading = 220;
+                    this.ped2_cords = new Vector3(55.09F, 3638.7F, 39.5F);
+                    this.Ped2Heading = 195;
+
+                    //Car 2
+                    this.enemyCar2_cords = new Vector3(89.79F, 3624.18F, 39.31F);
+                    this.Car2Heading = 144;
+
+                    //Peds for car 2
+                    this.ped3_cords = new Vector3(88.27F, 3621.99F, 39.82F);
+                    this.Ped3Heading = 141;
+                    this.ped4_cords = new Vector3(103.09F, 3644.17F, 39.75F);
+                    this.Ped4Heading = 145;
+                    break;
+
             }
             //TO-DO add destinations with elseif. 
 
